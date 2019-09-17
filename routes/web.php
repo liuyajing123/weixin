@@ -59,6 +59,9 @@ Route::prefix('/wechat')->group(function() {
 //    模板消息推送
     Route::get('/push_template_message','aaa\testController@push_template_message');
 //    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    Route::get('/agent_list','aaa\AgentController@agent_list');
+    Route::get('/create_qrcode','aaa\AgentController@create_qrcode'); //创建二维码
+//     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //    周考 留言
 //    留言视图
     Route::get('/liuyan','aaa\zhoukao@liuyan');
