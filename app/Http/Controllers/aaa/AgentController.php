@@ -19,7 +19,7 @@ class AgentController extends Controller
     public function agent_list()
     {
         $user_info = DB::table('user')->get();
-        return view('Agent.userList',['info'=>$user_info]);
+        return view('Agent/userlist',['info'=>$user_info]);
     }
     public function create_qrcode(Request $request)
     {
