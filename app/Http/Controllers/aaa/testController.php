@@ -32,7 +32,7 @@ class testController extends Controller
         }
 //        dd($last_info);
 //        dd($data);
-        return view("wechat/userlist",['data'=> $last_info,'openid'=>['data']]);
+        return view("wechat/userList",['data'=> $last_info,'openid'=>['data']]);
     }
     public function get_user_lists(Request $request)
     {
@@ -56,7 +56,7 @@ class testController extends Controller
 //        dd($data);
 //        $res = json_decode($openid_info,1);
 //        dd($res);
-        return view("wechat/userlists",['data'=>$openid_info,'tagid'=>isset($req->tagid)?$req->tagid:'']);
+        return view("wechat/userLists",['data'=>$openid_info,'tagid'=>isset($req->tagid)?$req->tagid:'']);
     }
 //用户详情
     public function user_detail(request $request)
@@ -218,10 +218,7 @@ class testController extends Controller
             return redirect('/wechat/source');
         }
     }
-
-    /**
-     * 微信素材管理页面
-     */
+// 素材管理页面
     public function wechat_source(Request $request,Client $client)
     {
         $req = $request->all();
@@ -305,7 +302,6 @@ class testController extends Controller
         ]);
         return $result->getBody(); $result->getBody();
     }
-
 //素材curl上传
     public function curl_upload($url,$path)
     {
