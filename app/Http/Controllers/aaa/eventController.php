@@ -10,7 +10,7 @@ class eventController extends Controller
     /**
      * 接收微信发送的消息【用户互动】
      */
-    public function event()
+    public function jiekou_peizhi_url()
     {
         $xml_string = file_get_contents('php://input');  //获取
         $wechat_log_psth = storage_path('logs/wechat/'.date('Y-m-d').'.log');
@@ -28,7 +28,7 @@ class eventController extends Controller
                 $share_code = explode('_',$xml_arr['EventKey'])[1];
                 $user_openid = $xml_arr['FromUserName']; //粉丝openid
                 //判断openid是否已经在日志表
-                $wechat_openid = DB::connection('mysql_cart')->table('wechat_openid')->where(['openid'=>$user_openid])->first();
+                $wechat_openid = DB::table('wechat_openid')->where(['openid'=>$user_openid])->first();
                 if(empty($wechat_openid)){
                     DB::table('user')->where(['id'=>$share_code])->increment('share_num',1);
                     DB::table('wechat_openid')->insert([

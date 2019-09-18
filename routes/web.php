@@ -59,8 +59,12 @@ Route::prefix('/wechat')->group(function() {
 //    模板消息推送
     Route::get('/push_template_message','aaa\testController@push_template_message');
 //    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//    列表
     Route::get('/agent_list','aaa\AgentController@agent_list');
-    Route::get('/create_qrcode','aaa\AgentController@create_qrcode'); //创建二维码
+    //创建二维码
+    Route::get('/create_qrcode','aaa\AgentController@create_qrcode');
+//
+    Route::any('/event','aaa\eventController@jiekou_peizhi_url');
 //     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //    周考 留言
 //    留言视图
