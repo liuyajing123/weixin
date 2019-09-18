@@ -12,6 +12,10 @@ class eventController extends Controller
      */
     public function jiekou_peizhi_url()
     {
+        echo $_GET['echostr'];
+        die();
+        echo "您已经进入接口配置的url";
+        echo 1;dd();
         $xml_string = file_get_contents('php://input');  //获取
         $wechat_log_psth = storage_path('logs/wechat/'.date('Y-m-d').'.log');
         file_put_contents($wechat_log_psth,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n",FILE_APPEND);

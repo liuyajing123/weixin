@@ -63,8 +63,6 @@ Route::prefix('/wechat')->group(function() {
     Route::get('/agent_list','aaa\AgentController@agent_list');
     //创建二维码
     Route::get('/create_qrcode','aaa\AgentController@create_qrcode');
-//
-    Route::any('/event','aaa\eventController@jiekou_peizhi_url');
 //     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //    周考 留言
 //    留言视图
@@ -74,3 +72,12 @@ Route::prefix('/wechat')->group(function() {
 //    次数清零
     Route::get('/clear_api','aaa\testController@clear_api');
 });
+
+Route::prefix('/admin')->group(function() {
+    Route::any('/jiekou_peizhi_url','aaa\eventController@jiekou_peizhi_url');
+    Route::post('/create_menu','aaa\menuController@create_menu'); //创建菜单
+    Route::get('/menu_list','aaa\menuController@menu_list');
+    Route::get('/load_menu','aaa\menuController@load_menu');
+    Route::get('/del_menu','aaa\menuController@del_menu');
+});
+
