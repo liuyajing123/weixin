@@ -149,7 +149,7 @@ class TagController extends Controller
 //    根据标签群发消息
     public function push_tag_message(Request $request)
     {
-        return view('Tag.pushTagMsg',['tagid'=>$request->all()['tagid']]);
+        return view('tag.pushTagMsg',['tagid'=>$request->all()['tagid']]);
     }
     public function do_push_tag_message(Request $request)
     {
