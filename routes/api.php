@@ -17,3 +17,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::any('post_test','aaa\testController@post_test');
+
+Route::any('event','aaa\EventController@event');
