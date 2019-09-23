@@ -115,6 +115,18 @@ class TagController extends Controller
         dd($info);
     }
 //     为粉丝打标签
+    public function tag_openid(Request $request)
+    {
+    $req = $request->all();
+    $url = 'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token='.$this->tools->get_access_token();
+    $data = [
+    'openid_list'=>$req['openid_list'],
+    'tagid'=>$req['tagid']
+    ];
+    $re = $this->tools->curl_post($url,json_encode($data));
+    $result = json_decode($re,1);
+    dd($result);
+    }
     public function user_tag_list(Request $request)
     {
         $req = $request->all();
@@ -134,18 +146,7 @@ class TagController extends Controller
             echo $tag_arr[$v]."<br/>";
         }
     }
-    public function tag_openid(Request $request)
-    {
-        $req = $request->all();
-        $url = 'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token='.$this->tools->get_access_token();
-        $data = [
-            'openid_list'=>$req['openid_list'],
-            'tagid'=>$req['tagid']
-        ];
-        $re = $this->tools->curl_post($url,json_encode($data));
-        $result = json_decode($re,1);
-        dd($result);
-    }
+
 //    根据标签群发消息
     public function push_tag_message(Request $request)
     {

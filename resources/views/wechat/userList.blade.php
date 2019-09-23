@@ -25,6 +25,7 @@
                     <td>{{$v['openid']}}</td>
                     <td>
                         <a href="{{url('wechat/user_detail',['openid'=>$v['openid']])}}">查看详情</a>
+                        <a href="{{url('wechat/user_tag_list')}}?openid={{$v['openid']}}">用户标签</a>
                     </td>
                 </tr>
             @endforeach

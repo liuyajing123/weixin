@@ -49,7 +49,7 @@ Route::prefix('/wechat')->group(function() {
 //    标签下粉丝列表
     Route::get('/tag_openid_list','aaa\TagController@tag_openid_list');
 //    为粉丝打标签
-    Route::any('/tag_openid','aaa\TagController@tag_openid');
+    Route::post('/tag_openid','aaa\TagController@tag_openid');
     //用户下的标签列表
     Route::get('/user_tag_list','aaa\TagController@user_tag_list');
     //推送标签消息
@@ -76,8 +76,26 @@ Route::prefix('/wechat')->group(function() {
 Route::prefix('/admin')->group(function() {
     Route::any('/jiekou_peizhi_url','aaa\eventController@jiekou_peizhi_url');
     Route::post('/create_menu','aaa\menuController@create_menu'); //创建菜单
-    Route::get('/menu_list','aaa\menuController@menu_list');
-    Route::get('/load_menu','aaa\menuController@load_menu');
-    Route::get('/del_menu','aaa\menuController@del_menu');
+    Route::get('/menu_list','aaa\menuController@menu_list');//菜单列表
+    Route::get('/load_menu','aaa\menuController@load_menu');//
+    Route::get('/del_menu','aaa\menuController@del_menu');//删除菜单
+//   登录
+    Route::get('/login','bb\biaoqianController@login');
+//    登录执行
+    Route::get('/do_login','bb\biaoqianController@do_login');
+//    获取code
+    Route::get('/get_code','bb\biaoqianController@get_code');
+//    用户列表
+    Route::get('user_list','bb\biaoqianController@user_list');
+    //添加标签视图
+    Route::get('/addtag','bb\biaoqianController@addtag');
+//添加标签执行
+    Route::post('/do_add','bb\biaoqianController@do_add');
+//    标签列表
+    Route::get('/tagList','bb\biaoqianController@tagList');
+//用户标签
+    Route::get('/tag','bb\biaoqianController@tag');
+    //    打标签
+    Route::post('/tag_openid','bb\biaoqianController@tag_openid');
 });
 
