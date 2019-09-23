@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//用户  授权登录  素材  标签  模板消息推送
 Route::prefix('/wechat')->group(function() {
 //获取access_token
     Route::get('/get_access_token', 'aaa\testController@get_access_token');
@@ -72,13 +73,14 @@ Route::prefix('/wechat')->group(function() {
 //    次数清零
     Route::get('/clear_api','aaa\testController@clear_api');
 });
-
+//自定义菜单  月份周考题
 Route::prefix('/admin')->group(function() {
     Route::any('/jiekou_peizhi_url','aaa\eventController@jiekou_peizhi_url');
     Route::post('/create_menu','aaa\menuController@create_menu'); //创建菜单
     Route::get('/menu_list','aaa\menuController@menu_list');//菜单列表
     Route::get('/load_menu','aaa\menuController@load_menu');//
     Route::get('/del_menu','aaa\menuController@del_menu');//删除菜单
+//    2019四月份技能题B卷
 //   登录
     Route::get('/login','bb\biaoqianController@login');
 //    登录执行
@@ -97,5 +99,9 @@ Route::prefix('/admin')->group(function() {
     Route::get('/tag','bb\biaoqianController@tag');
     //    打标签
     Route::post('/tag_openid','bb\biaoqianController@tag_openid');
+});
+//2019八月份技能B卷
+Route::prefix('/qiandao')->group(function(){
+
 });
 
