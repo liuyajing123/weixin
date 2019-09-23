@@ -27,31 +27,19 @@ class eventController extends Controller
         \Log::Info(json_encode($xml_arr,JSON_UNESCAPED_UNICODE));
         //echo $_GET['echostr'];
         //业务逻辑
-        if($xml_arr['MsgType'] == 'event'){
-//            if($xml_arr['Event'] == 'subscribe'){
-//                $share_code = explode('_',$xml_arr['EventKey'])[1];
-//                $user_openid = $xml_arr['FromUserName']; //粉丝openid
-//                //判断openid是否已经在日志表
-//                $wechat_openid = DB::table('wechat_openid')->where(['openid'=>$user_openid])->first();
-//                if(empty($wechat_openid)){
-//                    DB::table('user')->where(['id'=>$share_code])->increment('share_num',1);
-//                    DB::table('wechat_openid')->insert([
-//                        'openid'=>$user_openid,
-//                        'add_time'=>time()
-//                    ]);
-//                }
-//            }
-            $access_token = $this->tools->get_access_token();
-            $data = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/get?access_token=".$access_token."&next_openid=");
-            $data = json_decode($data,1);
-//        dd($data);
-            $last_info = [];
-            foreach($data['data']['openid'] as $k=>$v){
-                $user_info = file_get_contents('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$v.'&lang=zh_CN');
-                $user = json_decode($user_info,1);
-//            dd($user);
-                $last_info[$k]['nickname'] = $user['nickname'];
-                $last_info[$k]['openid'] = $v;
+        if($xml_arr['MsgType'] == 'event') {
+            if ($xml_arr['Event'] == 'subscribe') {
+                $share_code = explode('_', $xml_arr['EventKey'])[1];
+                $user_openid = $xml_arr['FromUserName']; //粉丝openid
+                //判断openid是否已经在日志表
+                $wechat_openid = DB::table('wechat_openid')->where(['openid' => $user_openid])->first();
+                if (empty($wechat_openid)) {
+                    DB::table('user')->where(['id' => $share_code])->increment('share_num', 1);
+                    DB::table('wechat_openid')->insert([
+                        'openid' => $user_openid,
+                        'add_time' => time()
+                    ]);
+                }
             }
         }
         $message = '欢迎{{$v->nickname}}同学，感谢您的关注';
