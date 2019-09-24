@@ -127,15 +127,20 @@ class TagController extends Controller
     $result = json_decode($re,1);
     dd($result);
     }
+//    用户标签
     public function user_tag_list(Request $request)
     {
         $req = $request->all();
+//        dd($req);
         $url = 'https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token='.$this->tools->get_access_token();
         $data = [
             'openid'=>$req['openid']
         ];
+//        dd($data);
         $re = $this->tools->curl_post($url,json_encode($data));
+//        dd($re);
         $result = json_decode($re,1);
+//        dd($result);
         $tag = file_get_contents('https://api.weixin.qq.com/cgi-bin/tags/get?access_token='.$this->tools->get_access_token());
         $tag_result = json_decode($tag,1);
         $tag_arr = [];

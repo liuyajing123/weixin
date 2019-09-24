@@ -28,21 +28,29 @@ class eventController extends Controller
         //echo $_GET['echostr'];
         //业务逻辑
         if($xml_arr['MsgType'] == 'event') {
-            if ($xml_arr['Event'] == 'subscribe') {
-                $share_code = explode('_', $xml_arr['EventKey'])[1];
-                $user_openid = $xml_arr['FromUserName']; //粉丝openid
-                //判断openid是否已经在日志表
-                $wechat_openid = DB::table('wechat_openid')->where(['openid' => $user_openid])->first();
-                if (empty($wechat_openid)) {
-                    DB::table('user')->where(['id' => $share_code])->increment('share_num', 1);
-                    DB::table('wechat_openid')->insert([
-                        'openid' => $user_openid,
-                        'add_time' => time()
-                    ]);
-                }
+//            if ($xml_arr['Event'] == 'subscribe') {
+//                $share_code = explode('_', $xml_arr['EventKey'])[1];
+//                $user_openid = $xml_arr['FromUserName']; //粉丝openid
+//                //判断openid是否已经在日志表
+//                $wechat_openid = DB::table('wechat_openid')->where(['openid' => $user_openid])->first();
+//                if (empty($wechat_openid)) {
+//                    DB::table('user')->where(['id' => $share_code])->increment('share_num', 1);
+//                    DB::table('wechat_openid')->insert([
+//                        'openid' => $user_openid,
+//                        'add_time' => time()
+//                    ]);
+//                }
+//            }
+            $nickname=$this->tools->get_user_lists($xml_string['FromUserName'])['nickname'];
+            $info = DB::table('wechat_openid')->where(['openid'=>$nickname])->get();
+//            dd($info);
+            $num=count($info);
+            $message = '';
+            foreach($info as $k=>$v){
+                $message .= "欢迎".$v->nickname.'同学'."\n";
             }
         }
-        $message = '欢迎{{$v->nickname}}同学，感谢您的关注';
+        $message = '欢迎关注';
         $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
         echo $xml_str;
     }
