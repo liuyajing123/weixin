@@ -5,9 +5,15 @@ namespace App\Http\Controllers\aaa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use App\Tools\Tools;
 class eventController extends Controller
 {
-        /**
+    public function __construct(Tools $tools)
+    {
+        $this->tools = $tools;
+    }
+
+    /**
          * 接收微信发送的消息【用户互动】
          */
         public function event()
@@ -28,7 +34,7 @@ class eventController extends Controller
         //echo $_GET['echostr'];
         //业务逻辑
         if($xml_arr['MsgType'] == 'event') {
-//            if ($xml_arr['Event'] == 'subscribe') {
+            if ($xml_arr['Event'] == 'subscribe') {
 //                $share_code = explode('_', $xml_arr['EventKey'])[1];
 //                $user_openid = $xml_arr['FromUserName']; //粉丝openid
 //                //判断openid是否已经在日志表
@@ -40,18 +46,16 @@ class eventController extends Controller
 //                        'add_time' => time()
 //                    ]);
 //                }
-//            }
-            $nickname=$this->tools->get_user_lists($xml_string['FromUserName'])['nickname'];
-            $info = DB::table('wechat_openid')->where(['openid'=>$nickname])->get();
-//            dd($info);
-            $num=count($info);
-            $message = '';
-            foreach($info as $k=>$v){
-                $message .= "欢迎".$v->nickname.'同学'."\n";
+//                关注 通过openid拿到用户基本信息
+                $user = file_get_contents('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FormUserName'].'&lang=zh_CN');
+                $user_info = json_decode($user,1);
+                $message = '欢迎'.$user_info['nickname'].'同学，感谢您的关注';
+                $xml_str = '<xml><ToU0serName><![CDATA['.$xml_arr['FromUserName'].']]></ToU0serName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+                echo $xml_str;
             }
         }
 //        $message = '欢迎关注';
-        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-        echo $xml_str;
+//        $xml_str = '<xml><ToU0serName><![CDATA['.$xml_arr['FromUserName'].']]></ToU0serName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+//        echo $xml_str;
     }
 }

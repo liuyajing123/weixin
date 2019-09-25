@@ -33,9 +33,35 @@ class testController extends Controller
         }
 //        dd($last_info);
 //        dd($data);
+        DB::table('wechat_openid')->insert([
+            'open_id' => $v,
+            'add_time' => time(),
+        ]);
         return view("wechat/userList",['data'=> $last_info,'openid'=>['data']]);
     }
-
+    //    粉丝
+    public function get_user_lists(Request $request)
+    {
+        $req = $request->all();
+//        dd($req);
+//        $openid_info = DB::table('wechat_openid')->get();
+//        dd($openid_info);
+        $access_token = $this->tools->get_access_token();
+        $data = file_get_contents("https://api.weixin.qq.com/cgi-bin/user/get?access_token=".$access_token."&next_openid=");
+        $data = json_decode($data,1);
+//        dd($data);
+        $last_info = [];
+        foreach($data['data']['openid'] as $k=>$v){
+            $user_info = file_get_contents('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$v.'&lang=zh_CN');
+            $user = json_decode($user_info,1);
+//            dd($user);
+            $last_info[$k]['nickname'] = $user['nickname'];
+            $last_info[$k]['openid'] = $v;
+        }
+//        dd($last_info);
+//        dd($data);
+        return view("wechat/userLists",['data'=>$last_info,'tagid'=>$req['tagid']]);
+    }
 //用户详情
     public function user_detail(request $request)
     {

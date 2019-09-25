@@ -171,7 +171,7 @@ class TagController extends Controller
             ],
             'msgtype'=>'text'
         ];
-        $re = $this->tools->curl_post($url,json_encode($data));
+        $re = $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
         $result = json_decode($re,1);
         dd($result);
     }
