@@ -100,8 +100,5 @@ Route::prefix('/admin')->group(function() {
     //    打标签
     Route::post('/tag_openid','bb\biaoqianController@tag_openid');
 });
-//2019八月份技能B卷
-Route::prefix('/qiandao')->group(function(){
 
-});
 
