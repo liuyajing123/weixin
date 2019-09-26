@@ -101,12 +101,12 @@ Route::prefix('/admin')->group(function() {
     Route::post('/tag_openid','bb\biaoqianController@tag_openid');
 //课程
     //授权登录
-    Route::get('/login','bb\kehcengController@login');
+    Route::get('/login','bb\kechengController@login');
     //获取code
-    Route::get('/get_code','bb\kehcengController@get_code');
+    Route::get('/get_code','bb\kechengController@get_code');
 //    添加课程
-    Route::get('/add_kecheng','bb\kehcengController@add_kecheng');
-    Route::post('/do_add_kecheng','bb\kehcengController@do_add_kecheng');
+    Route::get('/add_kecheng','bb\kechengController@add_kecheng');
+    Route::post('/do_add_kecheng','bb\kechengController@do_add_kecheng');
 });
 
 
