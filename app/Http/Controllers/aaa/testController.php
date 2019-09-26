@@ -15,6 +15,10 @@ class testController extends Controller
         $this->tools = $tools;
     }
 
+    public function get_access_token()
+    {
+        return $this->tools->get_access_token();
+    }
 //用户列表
 //liuyan
     public function get_user_list()
