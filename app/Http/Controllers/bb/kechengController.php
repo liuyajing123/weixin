@@ -63,7 +63,7 @@ class kechengController extends Controller
 //            存在
             $request->session()->put('uid',$wechat_info->uid);
 //            echo "ok";
-            $user_wechat_info=DB::table("user_wechat")->where(['id'=>$wechat_info['uid']])->first();
+            $user_wechat_info=DB::table("user_wechat")->where(['id'=>$wechat_info->uid])->first();
             dd($user_wechat_info);
 //            dd($request->session()->put('username',$user_wechat_info->name));
 //            dd($user_wechat_info->name);
