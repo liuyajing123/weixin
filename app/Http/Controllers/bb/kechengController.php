@@ -18,7 +18,9 @@ class kechengController extends Controller
 //        echo 111;
         $data = $request->all();
 //        dd($data);
+        $user_name=session('kecheng_user_name');
         $res = DB::table('kecheng')->insert([
+            'username'=>$user_name,
             'kecheng1'=>$data['kecheng1'],
             'kecheng2'=>$data['kecheng2'],
             'kecheng3'=>$data['kecheng3'],
@@ -61,12 +63,8 @@ class kechengController extends Controller
 //        dd($wechat_info);打印后  id uid openid
         if(!empty($wechat_info)){
 //            存在
-            $request->session()->put('uid',$wechat_info->uid);
-//            echo "ok";
             $user_wechat_info=DB::table("user")->where(['id'=>$wechat_info->uid])->first();
-            dd($user_wechat_info);
-//            dd($request->session()->put('username',$user_wechat_info->name));
-//            dd($user_wechat_info->name);
+//            dd($user_wechat_info);
             session(['kecheng_user_name' =>$user_wechat_info->name]);
             return view('admin/success')->with([
                 //跳转信息
@@ -92,8 +90,9 @@ class kechengController extends Controller
                 'openid'=>$openid
             ]);
 //            登录操作
-            $request->session()->put('uid',$wechat_info['uid']);
-//            echo "ok";
+            $user_wechat_info=DB::table("user")->where(['id'=>$wechat_info->uid])->first();
+//            dd($user_wechat_info);
+            session(['kecheng_user_name' =>$user_wechat_info->name]);
             return view('admin/success')->with([
                 //跳转信息
                 'message'=>'登陆成功 正在跳转至课程管理列表！',
