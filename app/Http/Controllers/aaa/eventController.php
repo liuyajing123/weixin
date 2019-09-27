@@ -80,11 +80,11 @@ class eventController extends Controller
                             'open_id'=>$xml_arr['FromUserName'],
                             'add_time'=>time()
                         ]);
-                        $message = '积分：0';
+                        $message = '请先选择课程';
                         $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
                         echo $xml_str;
                     }else{
-                        $message = '积分：'.$openid_info->score;
+                        $message = '你好'.$openid_info->openid.'同学,你的课程安排如下';
                         $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
                         echo $xml_str;
                     }

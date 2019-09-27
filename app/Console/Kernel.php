@@ -4,7 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+use DB;
+use Log;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -24,10 +25,44 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            $redis = new \Redis();
+            $redis->connect('127.0.0.1','6379');
+            $app = app('wechat.official_account');
+            \Log::Info('进入自动任务了');
+            dd();
+             //业务逻辑二 课程 可以用
+             //课程提醒
+             //推送模板消息
+             $openid_info = $app->user->list($nextOpenId = null);
+             $openid_list = $openid_info['data'];
+ //
+             //要给所有人群发的话 遍历open_list 将$app这个模板发送方法包起来
+             foreach ($openid_list['openid'] as $vqq){
+ //            $user_name=$this->wechat->get_user_info($vqq)['nickname'];
+                 $user_name= $app->user->get($vqq)['nickname'];
+ //        dd($user_name);
+                 $kecheng_info = DB::table('kecheng')->where(['username'=>$user_name])->orderBy('id','desc')->first();
+                 $kecheng_info=json_decode(json_encode($kecheng_info),1);
+ //        dd($kecheng_info);
+                 $kecheng_info_1=$kecheng_info;
+                 $app->template_message->send([
+                     'touser' => $vqq,
+                     'template_id' =>'gpUZmcHS-r8sXbD-qZaXkrR2zPrD14jZV-ceQWpSSWA',
+                     'url' => 'http://www.liuyajing.top',
+                     'data' => [
+                         'first' => $app->user->get($vqq)['nickname'],
+                         'keyword1' => $kecheng_info_1['kecheng_1'],
+                         'keyword2' => $kecheng_info_1['kecheng_2'],
+                         'keyword3' => $kecheng_info_1['kecheng_3'],
+                         'keyword4' => $kecheng_info_1['kecheng_4'],
+                     ],
+                 ]);
+             }
+ //            dailyAt('20:00')
+ //            everyMinute()
+        })->everyMinute();
     }
-
     /**
      * Register the commands for the application.
      *
