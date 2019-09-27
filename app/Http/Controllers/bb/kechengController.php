@@ -18,7 +18,17 @@ class kechengController extends Controller
 //        echo 111;
         $data = $request->all();
 //        dd($data);
-
+        $res = DB::table('kecheng')->insert([
+            'kecheng1'=>$data['kecheng1'],
+            'kecheng2'=>$data['kecheng2'],
+            'kecheng3'=>$data['kecheng3'],
+            'kecheng4'=>$data['kecheng4'],
+        ]);
+        if($res){
+            echo "添加成功";
+        }else{
+            echo "添加失败";
+        }
     }
     //微信第三方登录
     public function login()
@@ -49,20 +59,9 @@ class kechengController extends Controller
 //        dd($wechat_info);
         if(!empty($wechat_info)){
 //            存在
-            $user_wechat_info=DB::table("user_wechat")->where(['id'=>$wechat_info['uid']])->first();
-            dd($user_wechat_info);
-//            session(['kecheng_user_name' =>$]);
+            $request->session()->put('uid',$wechat_info->uid);
 //            echo "ok";
-            return view('admin/success')->with([
-                //跳转信息
-                'message'=>'登陆成功 正在跳转至课程管理列表！',
-                //自己的跳转路径
-                'url' =>asset('admin/add_kecheng'),
-                //跳转路径名称
-                'urlname' =>'课程管理',
-                //跳转等待时间（s）
-                'jumpTime'=>3,
-            ]);
+            return redirect('admin/add_kecheng');
         }else{
 //            不存在
 //            插入user表数据一条
@@ -79,16 +78,7 @@ class kechengController extends Controller
 //            登录操作
             $request->session()->put('uid',$wechat_info['uid']);
 //            echo "ok";
-            return view('admin/success')->with([
-                //跳转信息
-                'message'=>'登陆成功 正在跳转至课程管理列表！',
-                //自己的跳转路径
-                'url' =>asset('admin/add_kecheng'),
-                //跳转路径名称
-                'urlname' =>'课程管理',
-                //跳转等待时间（s）
-                'jumpTime'=>3,
-            ]);
+            return redirect('admin/add_kecheng');
         }
     }
 }
