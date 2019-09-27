@@ -62,7 +62,16 @@ class kechengController extends Controller
 //            存在
             $request->session()->put('uid',$wechat_info->uid);
 //            echo "ok";
-            return redirect('admin/add_kecheng');
+            return view('admin/success')->with([
+                //跳转信息
+                'message'=>'登陆成功 正在跳转至课程管理列表！',
+                //自己的跳转路径
+                'url' =>asset('/admin/add_kecheng'),
+                //跳转路径名称
+                'urlname' =>'课程管理',
+                //跳转等待时间（s）
+                'jumpTime'=>3,
+            ]);
         }else{
 //            不存在
 //            插入user表数据一条
@@ -79,7 +88,16 @@ class kechengController extends Controller
 //            登录操作
             $request->session()->put('uid',$wechat_info['uid']);
 //            echo "ok";
-            return redirect('admin/add_kecheng');
+            return view('admin/success')->with([
+                //跳转信息
+                'message'=>'登陆成功 正在跳转至课程管理列表！',
+                //自己的跳转路径
+                'url' =>asset('/admin/add_kecheng'),
+                //跳转路径名称
+                'urlname' =>'课程管理',
+                //跳转等待时间（s）
+                'jumpTime'=>3,
+            ]);
         }
     }
 }
