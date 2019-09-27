@@ -10,7 +10,23 @@ class kechengController extends Controller
 //    课程添加
     public function add_kecheng()
     {
-        return view('kecheng/add_kecheng');
+        $user_name=session('kecheng_user_name');
+        $kecheng_info = DB::table('kecheng')->where(['username'=>$user_name])->orderBy('id','desc')->first();
+        $kecheng_info=json_decode(json_encode($kecheng_info),1);
+//       dd($kecheng_info['kecheng_1']);
+//        $nickname_info=$this->wechat->get_user_info('oMbARt6tCM2dJZL6MjdKPmOxrpMY');
+////                    dd($nickname_info);
+//        $nickname_1=$nickname_info['nickname'];
+//        dd($nickname_1);
+        if(empty($kecheng_info)){
+            //为空跳转去添加页面
+//            dump("为空");die();
+            return view('kecheng/add_kecheng_1');
+        }else{
+            //不为空去展示页面 带去数据
+//            dump("不为空");die();
+            return view('kecheng/add_kecheng',['data'=>$$kecheng_info]);
+        }
     }
 //    课程执行
     public  function do_add_kecheng(Request $request)
