@@ -56,12 +56,18 @@ class kechengController extends Controller
         $info = json_decode($info, 1);
 //        dd($info);
         $openid = $url['openid'];
+//        根据openid判断用户表中是否有此用户
         $wechat_info = DB::table('user_wechat')->where(['openid'=>$openid])->first();
-//        dd($wechat_info);
+//        dd($wechat_info);打印后  id uid openid
         if(!empty($wechat_info)){
 //            存在
             $request->session()->put('uid',$wechat_info->uid);
 //            echo "ok";
+            $user_wechat_info=DB::table("user_wechat")->where(['id'=>$wechat_info['uid']])->first();
+            dd($user_wechat_info);
+//            dd($request->session()->put('username',$user_wechat_info->name));
+//            dd($user_wechat_info->name);
+            session(['kecheng_user_name' =>$user_wechat_info->name]);
             return view('admin/success')->with([
                 //跳转信息
                 'message'=>'登陆成功 正在跳转至课程管理列表！',
