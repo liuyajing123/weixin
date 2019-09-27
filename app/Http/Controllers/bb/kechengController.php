@@ -25,7 +25,7 @@ class kechengController extends Controller
         }else{
             //不为空去展示页面 带去数据
 //            dump("不为空");die();
-            return view('kecheng/add_kecheng',['data'=>$$kecheng_info]);
+            return view('kecheng/add_kecheng',['data'=>$kecheng_info]);
         }
     }
 //    课程执行
