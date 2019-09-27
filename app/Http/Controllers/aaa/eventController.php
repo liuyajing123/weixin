@@ -71,6 +71,24 @@ class eventController extends Controller
                 $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
                 echo $xml_str;
             }
+            if($xml_arr['EventKey'] == 'chakan'){
+                    //查课程
+                    $openid_info = DB::table("wechat_openid")->where(['open_id'=>$xml_arr['FromUserName']])->first();
+                    if(empty($openid_info)){
+                        //没有数据，存入
+                        DB::table("wechat_openid")->insert([
+                            'open_id'=>$xml_arr['FromUserName'],
+                            'add_time'=>time()
+                        ]);
+                        $message = '积分：0';
+                        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+                        echo $xml_str;
+                    }else{
+                        $message = '积分：'.$openid_info->score;
+                        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+                        echo $xml_str;
+                    }
+                }
 ////            签到
 //            if($xml_arr['MsgType'] == 'event' && $xml_arr['Event'] == 'CLICK'){
 //                if($xml_arr['EventKey'] == 'qiandao'){
