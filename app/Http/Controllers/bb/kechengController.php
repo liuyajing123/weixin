@@ -30,6 +30,7 @@ class kechengController extends Controller
             echo "添加失败";
         }
     }
+//    课程修改
     //微信第三方登录
     public function login()
     {

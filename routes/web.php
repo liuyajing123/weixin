@@ -99,7 +99,7 @@ Route::prefix('/admin')->group(function() {
     Route::get('/tag','bb\biaoqianController@tag');
     //    打标签
     Route::post('/tag_openid','bb\biaoqianController@tag_openid');
-//课程
+//2019-8A卷课程
     //授权登录
     Route::get('/login','bb\kechengController@login');
     //获取code
