@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 //用户  授权登录  素材  标签  模板消息推送
 Route::prefix('/wechat')->group(function() {
+    Route::get('/text','aaa\testController@text');
 //获取access_token
     Route::get('/get_access_token', 'aaa\testController@get_access_token');
 //用户列表

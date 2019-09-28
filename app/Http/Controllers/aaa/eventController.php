@@ -71,24 +71,40 @@ class eventController extends Controller
                 $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
                 echo $xml_str;
             }
-            if($xml_arr['EventKey'] == 'chakan'){
-                    //查课程
-                    $openid_info = DB::table("wechat_openid")->where(['open_id'=>$xml_arr['FromUserName']])->first();
-                    if(empty($openid_info)){
-                        //没有数据，存入
-                        DB::table("wechat_openid")->insert([
-                            'open_id'=>$xml_arr['FromUserName'],
-                            'add_time'=>time()
-                        ]);
-                        $message = '请先选择课程';
-                        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-                        echo $xml_str;
-                    }else{
-                        $message = '你好'.$openid_info->openid.'同学,你的课程安排如下';
-                        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-                        echo $xml_str;
-                    }
+            if($xml_arr['MsgType'] =='event' && $xml_arr['Event'] == 'subscribe'){
+//                关注
+                $user =file_get_contents('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FormUserName'].'&lang=zh_CN');
+                $re = json_decode($user,1);
+                $user_info = DB::table('user_weixin')->where(['openid'=>$xml_arr['FormUserName']])->first();
+                if(empty($user_info)){
+//                    没有数据  将数据存入数据库
+                    DB::table("user_weixin")->insert([
+                        'openid'=>$xml_arr['FormUserName'],
+                        'add_time'=>time()
+                    ]);
                 }
+                $message = '您好'.$re['nickname'].'当前时间为:'.time();
+                $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+                echo $xml_str;
+            }
+//            if($xml_arr['EventKey'] == 'chakan'){
+//                    //查课程
+//                    $openid_info = DB::table("wechat_openid")->where(['open_id'=>$xml_arr['FromUserName']])->first();
+//                    if(empty($openid_info)){
+//                        //没有数据，存入
+//                        DB::table("wechat_openid")->insert([
+//                            'open_id'=>$xml_arr['FromUserName'],
+//                            'add_time'=>time()
+//                        ]);
+//                        $message = '请先选择课程';
+//                        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+//                        echo $xml_str;
+//                    }else{
+//                        $message = '你好'.$openid_info['nickname'].'同学,你的课程安排如下';
+//                        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+//                        echo $xml_str;
+//                    }
+//                }
 ////            签到
 //            if($xml_arr['MsgType'] == 'event' && $xml_arr['Event'] == 'CLICK'){
 //                if($xml_arr['EventKey'] == 'qiandao'){

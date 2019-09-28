@@ -4,8 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use DB;
-use Log;
+use App\Tools\Tools;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -26,42 +25,100 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            $redis = new \Redis();
-            $redis->connect('127.0.0.1','6379');
-            $app = app('wechat.official_account');
-            \Log::Info('进入自动任务了');
-            dd();
-             //业务逻辑二 课程 可以用
-             //课程提醒
-             //推送模板消息
-             $openid_info = $app->user->list($nextOpenId = null);
-             $openid_list = $openid_info['data'];
- //
-             //要给所有人群发的话 遍历open_list 将$app这个模板发送方法包起来
-             foreach ($openid_list['openid'] as $vqq){
- //            $user_name=$this->wechat->get_user_info($vqq)['nickname'];
-                 $user_name= $app->user->get($vqq)['nickname'];
- //        dd($user_name);
-                 $kecheng_info = DB::table('kecheng')->where(['username'=>$user_name])->orderBy('id','desc')->first();
-                 $kecheng_info=json_decode(json_encode($kecheng_info),1);
- //        dd($kecheng_info);
-                 $kecheng_info_1=$kecheng_info;
-                 $app->template_message->send([
-                     'touser' => $vqq,
-                     'template_id' =>'gpUZmcHS-r8sXbD-qZaXkrR2zPrD14jZV-ceQWpSSWA',
-                     'url' => 'http://www.liuyajing.top',
-                     'data' => [
-                         'first' => $app->user->get($vqq)['nickname'],
-                         'keyword1' => $kecheng_info_1['kecheng_1'],
-                         'keyword2' => $kecheng_info_1['kecheng_2'],
-                         'keyword3' => $kecheng_info_1['kecheng_3'],
-                         'keyword4' => $kecheng_info_1['kecheng_4'],
-                     ],
-                 ]);
-             }
- //            dailyAt('20:00')
- //            everyMinute()
-        })->everyMinute();
+            //功能 业务逻辑
+            //$tools = new Tools();
+            $user_url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token='.$this->tools->get_access_token().'&next_openid=';
+            $openid_info = file_get_contents($user_url);
+            $user_result = json_decode($openid_info,1);
+            foreach($user_result['data']['openid'] as $v){
+                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$v.'&lang=zh_CN';
+                $user_re = file_get_contents($url);
+                $user_info = json_decode($user_re,1);
+                $db_user = DB::connection('mysql_cart')->table("wechat_openid")->where(['openid'=>$v])->first();
+                if(empty($db_user)){
+                    //没有数据，存入
+                    DB::connection('mysql_cart')->table("wechat_openid")->insert([
+                        'openid'=>$v,
+                        'add_time'=>time()
+                    ]);
+                    //就是未签到
+                    $openid = 'oPi8KuHGfvHjhL4u9BnIL4upIaJE';
+                    $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->tools->get_access_token();
+                    $data = [
+                        'touser'=>$openid,
+                        'template_id'=>'O0fFvgd-spPBGqQ_FrMt2zUgqxgZMz0fgZDquvswt14',
+                        'url'=>'http://www.shopdemo.com',
+                        'data'=>[
+                            'first'=>[
+                                'value'=>'first',
+                                'color'=>''
+                            ],
+                            'keyword1'=>[
+                                'value'=>'keyword1',
+                                'color'=>''
+                            ],
+                            'keyword2'=>[
+                                'value'=>'keyword2',
+                                'color'=>''
+                            ]
+                        ]
+                    ];
+                    $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+                }else{
+                    //判断是否签到
+                    $today = date('Y-m-d',time());
+                    if($db_user->sign_day == $today){
+                        $openid = 'oPi8KuHGfvHjhL4u9BnIL4upIaJE';
+                        $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->tools->get_access_token();
+                        $data = [
+                            'touser'=>$openid,
+                            'template_id'=>'O0fFvgd-spPBGqQ_FrMt2zUgqxgZMz0fgZDquvswt14',
+                            'url'=>'http://www.shopdemo.com',
+                            'data'=>[
+                                'first'=>[
+                                    'value'=>'first',
+                                    'color'=>''
+                                ],
+                                'keyword1'=>[
+                                    'value'=>'keyword1',
+                                    'color'=>''
+                                ],
+                                'keyword2'=>[
+                                    'value'=>'keyword2',
+                                    'color'=>''
+                                ]
+                            ]
+                        ];
+                        $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+                    }else{
+                        $openid = 'oPi8KuHGfvHjhL4u9BnIL4upIaJE';
+                        $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->tools->get_access_token();
+                        $data = [
+                            'touser'=>$openid,
+                            'template_id'=>'O0fFvgd-spPBGqQ_FrMt2zUgqxgZMz0fgZDquvswt14',
+                            'url'=>'http://www.shopdemo.com',
+                            'data'=>[
+                                'first'=>[
+                                    'value'=>'first',
+                                    'color'=>''
+                                ],
+                                'keyword1'=>[
+                                    'value'=>'keyword1',
+                                    'color'=>''
+                                ],
+                                'keyword2'=>[
+                                    'value'=>'keyword2',
+                                    'color'=>''
+                                ]
+                            ]
+                        ];
+                        $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+                    }
+                }
+            }
+            // })->daily();
+            //})->everyMinute();
+        })->dailyAt('20:00');
     }
     /**
      * Register the commands for the application.
