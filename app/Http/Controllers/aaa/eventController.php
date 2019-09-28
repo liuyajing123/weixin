@@ -36,7 +36,7 @@ class eventController extends Controller
             if($xml_arr['MsgType'] == 'event' && $xml_arr['Event'] == 'subscribe'){
                 //关注
                 //opnid拿到用户基本信息
-                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_wechat_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
+                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
                 $user_re = file_get_contents($url);
                 $user_info = json_decode($user_re,1);
                 //存入数据库
