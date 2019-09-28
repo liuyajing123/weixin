@@ -76,10 +76,10 @@ class eventController extends Controller
                 $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
                 $user_re = file_get_contents($url);
                 $user_info = json_decode($user_re,1);
-                $db_user = DB::table("user_weixin")->where(['openid'=>$xml_arr['FromUserName']])->first();
+                $db_user = DB::table("wechat_openid")->where(['openid'=>$xml_arr['FromUserName']])->first();
                 if(empty($db_user)){
                     //没有数据，存入
-                    DB::table("user_weixin")->insert([
+                    DB::table("wechat_openid")->insert([
                         'openid'=>$xml_arr['FromUserName'],
                         'add_time'=>time()
                     ]);
