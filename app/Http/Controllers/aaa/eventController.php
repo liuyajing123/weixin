@@ -52,25 +52,25 @@ class eventController extends Controller
 //        $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
 //        echo $xml_str;
 //            欢迎xx同学
-            if($xml_arr['MsgType'] == 'event' && $xml_arr['Event'] == 'subscribe'){
-                //关注
-                //opnid拿到用户基本信息
-                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
-                $user_re = file_get_contents($url);
-                $user_info = json_decode($user_re,1);
-                //存入数据库
-                $db_user = DB::table("wechat_openid")->where(['open_id'=>$xml_arr['FromUserName']])->first();
-                if(empty($db_user)){
-                    //没有数据，存入
-                    DB::table("wechat_openid")->insert([
-                        'open_id'=>$xml_arr['FromUserName'],
-                        'add_time'=>time()
-                    ]);
-                }
-                $message = '欢迎'.$user_info['nickname'].'同学，进入选课系统';
-                $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-                echo $xml_str;
-            }
+//            if($xml_arr['MsgType'] == 'event' && $xml_arr['Event'] == 'subscribe'){
+//                //关注
+//                //opnid拿到用户基本信息
+//                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
+//                $user_re = file_get_contents($url);
+//                $user_info = json_decode($user_re,1);
+//                //存入数据库
+//                $db_user = DB::table("wechat_openid")->where(['open_id'=>$xml_arr['FromUserName']])->first();
+//                if(empty($db_user)){
+//                    //没有数据，存入
+//                    DB::table("wechat_openid")->insert([
+//                        'open_id'=>$xml_arr['FromUserName'],
+//                        'add_time'=>time()
+//                    ]);
+//                }
+//                $message = '欢迎'.$user_info['nickname'].'同学，进入选课系统';
+//                $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+//                echo $xml_str;
+//            }
             if($xml_arr['MsgType'] =='event' && $xml_arr['Event'] == 'subscribe'){
 //                关注
                 $user =file_get_contents('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_access_token().'&openid='.$xml_arr['FormUserName'].'&lang=zh_CN');
