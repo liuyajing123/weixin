@@ -10,7 +10,7 @@
 <body>
 <form action="do_bind" method="post">
     用户名：<input type="text" name="name" id=""><br>
-    密码：<input type="password" name="password" id="">
+    密码：<input type="password" name="password" id=""><br>
     <button>绑定</button>
 </form>
 </body>
