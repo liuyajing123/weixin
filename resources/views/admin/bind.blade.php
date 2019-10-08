@@ -11,7 +11,7 @@
 <form action="do_bind" method="post">
     用户名：<input type="text" name="name" id="">
     密码：<input type="password" name="password" id="">
-    <input type="button" value="绑定">
+    <button>绑定</button>
 </form>
 </body>
 </html>
