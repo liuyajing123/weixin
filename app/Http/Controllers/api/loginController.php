@@ -35,7 +35,7 @@ class loginController extends Controller
         $data=$data->toArray();
         //登录成功 存到session
         session(['data'=>$data]);
-        return redirect('admin/index');
+        return redirect('index/index');
     }
 //发送验证码
     public function send(request $request)
@@ -85,16 +85,29 @@ class loginController extends Controller
     }
     public function do_bind(Request $request)
     {
-        $data = $request->except(['_token']);
-//         dd($data);
-        $res = DB::table('users')->insert([
-            'name' => $data['name'],
-            'password' => $data['password'],
-        ]);
-        if ($res) {
-            echo "<script>alert('绑定账号成功');location.href='/index/login';</script>";
-        } else {
-            echo "<script>alert('绑定账号失败');location.href='/index/login';</script>";
+//        $data = $request->except(['_token']);
+////         dd($data);
+//        $res = DB::table('users')->insert([
+//            'name' => $data['name'],
+//            'password' => $data['password'],
+//        ]);
+//        if ($res) {
+//            echo "<script>alert('绑定账号成功');location.href='/index/login';</script>";
+//        } else {
+//            echo "<script>alert('绑定账号失败');location.href='/index/login';</script>";
+//        }
+        $name = request('name');
+        $password = request('password');
+        $adminInfo = DB::table('users')->where(['name'=>$name,'password'=>$password])->first();
+        if(!$adminInfo){
+            echo json_encode(['ret'=>0,'msg'=>'用户名或密码错误']);die;
         }
+        $openid = wechat::getOpenid();
+        DB::table('users')->where(['name'=>$name,'password'=>$password])->update([
+            'openid'=>$openid
+        ]);
+        $adminInfo->openid = $openid;
+//        $adminInfo->save();
+        echo '账号绑定成功';die;
     }
 }
