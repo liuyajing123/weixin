@@ -9,7 +9,7 @@
 </head>
 <body>
 <form action="do_bind" method="post">
-    用户名：<input type="text" name="name" id="">
+    用户名：<input type="text" name="name" id=""><br>
     密码：<input type="password" name="password" id="">
     <button>绑定</button>
 </form>
