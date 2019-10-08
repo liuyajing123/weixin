@@ -92,9 +92,9 @@ class loginController extends Controller
             'password' => $data['password'],
         ]);
         if ($res) {
-            echo "<script>alert('绑定账号成功');location.href='/index/bind';</script>";
+            echo "<script>alert('绑定账号成功');location.href='/index/login';</script>";
         } else {
-            echo "<script>alert('绑定账号失败');location.href='/index/bind';</script>";
+            echo "<script>alert('绑定账号失败');location.href='/index/login';</script>";
         }
     }
 }
