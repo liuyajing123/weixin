@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tools\Tools;
-use App\wechat;
+use App\Model\wechat;
 class loginController extends Controller
 {
     public $tools;
