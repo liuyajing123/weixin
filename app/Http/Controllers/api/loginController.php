@@ -89,9 +89,10 @@ class loginController extends Controller
 //         dd($data);
         $res=DB::table('users')->insert($data);
         if($res){
-            echo "<script>alert('绑定账号成功');location.href='/index/bind';</script>";
+            echo '账号绑定成功';
+            redirect('index/bind');
         }else{
-            echo "<script>alert('绑定账号失败');location.href='/index/bind';</script>";
+            echo "账号绑定失败";
         }
     }
 }
