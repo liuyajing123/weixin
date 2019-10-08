@@ -86,7 +86,7 @@ class loginController extends Controller
     public function do_bind(Request $request)
     {
         $data=$request->except(['_token']);
-//         dd($data);
+         dd($data);
         $res=DB::table('users')->insert($data);
         if($res){
             echo '账号绑定成功';
