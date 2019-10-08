@@ -8,6 +8,7 @@ use App\Tools\Tools;
 use App\Model\wechat;
 class loginController extends Controller
 {
+
     public $tools;
     public function __construct(Tools $tools)
     {

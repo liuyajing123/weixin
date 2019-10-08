@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class wechat extends Model
 {
+    const appid = "wx6dbeadb9cd007960";
+    const secret = "aa47fdc432db8a90630ca968c705a5f5";
     /**
      * 网页授权获取用户openid
      * @return [type] [description]
