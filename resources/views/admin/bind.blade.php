@@ -9,6 +9,7 @@
 </head>
 <body>
 <form action="do_bind" method="post">
+    @csrf
     用户名：<input type="text" name="name" id=""><br>
     密码：<input type="password" name="password" id=""><br>
     <button>绑定</button>
