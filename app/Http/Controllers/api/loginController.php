@@ -85,17 +85,16 @@ class loginController extends Controller
     }
     public function do_bind(Request $request)
     {
-        $data=$request->except(['_token']);
+        $data = $request->except(['_token']);
 //         dd($data);
-        $res=DB::table('users')->insert([
-            'name'=>$data['name'],
-            'password'=>$data['password'],
+        $res = DB::table('users')->insert([
+            'name' => $data['name'],
+            'password' => $data['password'],
         ]);
-        if($res){
-            echo '账号绑定成功';
-            return redirect('index/bind');
-        }else{
-            echo "账号绑定失败";
+        if ($res) {
+            echo "<script>alert('绑定账号成功');location.href='/index/bind';</script>";
+        } else {
+            echo "<script>alert('绑定账号失败');location.href='/index/bind';</script>";
         }
     }
 }
