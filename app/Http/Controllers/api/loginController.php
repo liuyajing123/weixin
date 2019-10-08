@@ -80,12 +80,17 @@ class loginController extends Controller
 //    账号绑定
     public function bind()
     {
-        $openid = wechat::getOpenid();
-
         return view('admin/bind');
     }
-    public function do_bind()
+    public function do_bind(Request $request)
     {
-        echo 111;
+        $data=$request->except(['_token']);
+//         dd($data);
+        $res=DB::table('users')->insert($data);
+        if($res){
+            echo "<script>alert('绑定账号成功');location.href='/index/bind';</script>";
+        }else{
+            echo "<script>alert('绑定账号失败');location.href='/index/bind';</script>";
+        }
     }
 }
