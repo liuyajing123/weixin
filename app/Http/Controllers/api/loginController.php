@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tools\Tools;
 use App\Model\wechat;
+use DB;
 class loginController extends Controller
 {
 
