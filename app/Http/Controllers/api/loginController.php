@@ -93,7 +93,7 @@ class loginController extends Controller
         ]);
         if($res){
             echo '账号绑定成功';
-            redirect('index/bind');
+            return redirect('index/bind');
         }else{
             echo "账号绑定失败";
         }
