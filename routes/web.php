@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//八月微信 （aaa文件夹demo bb文件夹月考卷）
 //用户  授权登录  素材  标签  模板消息推送
 Route::prefix('/wechat')->group(function() {
     Route::get('/text','aaa\testController@text');
@@ -109,5 +110,12 @@ Route::prefix('/admin')->group(function() {
     Route::get('/add_kecheng','bb\kechengController@add_kecheng');
     Route::post('/do_add_kecheng','bb\kechengController@do_add_kecheng');
 });
-
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------//
+//九月API接口*
+Route::prefix('/index')->group(function (){
+    Route::get('/login','api\loginController@login');
+    Route::get('/index','api\loginController@index');
+    Route::get('/send','api\loginController@send');
+    Route::get('/bind','api\loginController@bind');
+    Route::post('/do_bind','api\loginController@do_bind');
+});
