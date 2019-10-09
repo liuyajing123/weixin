@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Tools\Tools;
 use App\Model\wechat;
 use DB;
+use Redis;
 class loginController extends Controller
 {
 
@@ -15,27 +16,43 @@ class loginController extends Controller
     {
         $this->tools=$tools;
     }
-
+    //后台首页
+    public function index()
+    {
+        return view('admin/index');
+    }
     //后台登录
     public function login()
     {
-        return view('admin\login');
+        return view('admin/login');
     }
-    public function do_login()
+    public function do_login(Request $request)
     {
-        $name=request('name');
-        $password=request('password');
-        //用户名错误 密码错误   用户名或密码错误
-        $data=DB::table('user')->where(['name'=>$name,'password'=>$password])->first();
-//        dd($data);
-        if(!data){
-            //报错登录失败
-            die;
+//        $name=request('name');
+//        $password=request('password');
+//        //用户名错误 密码错误   用户名或密码错误
+//        $data=DB::table('user')->where(['name'=>$name,'password'=>$password])->first();
+////        dd($data);
+//        if(!data){
+//            //报错登录失败
+//            die;
+//        }
+//        $data=$data->toArray();
+//        //登录成功 存到session
+//        session(['data'=>$data]);
+//        return redirect('index/index');
+        $username = $request ->input('username');
+        $pwd = $request ->input('password');
+        $code = $request ->input('code');
+        $value = Radis::get('code'.$username);
+        if($code != $value){
+            return json_encode(['code'=>202, 'msg'=>'验证码错误或已过期']);
         }
-        $data=$data->toArray();
-        //登录成功 存到session
-        session(['data'=>$data]);
-        return redirect('index/index');
+        // dd($yan);
+        // var_dump($username);
+        // var_dump($pwd);die;
+        // dd($url);
+        $status=DB::table('users')->where(['password'=>$pwd])->first();
     }
 //发送验证码
     public function send(request $request)
@@ -85,17 +102,6 @@ class loginController extends Controller
     }
     public function do_bind(Request $request)
     {
-//        $data = $request->except(['_token']);
-////         dd($data);
-//        $res = DB::table('users')->insert([
-//            'name' => $data['name'],
-//            'password' => $data['password'],
-//        ]);
-//        if ($res) {
-//            echo "<script>alert('绑定账号成功');location.href='/index/login';</script>";
-//        } else {
-//            echo "<script>alert('绑定账号失败');location.href='/index/login';</script>";
-//        }
         $name = request('name');
         $password = request('password');
         $adminInfo = DB::table('users')->where(['name'=>$name,'password'=>$password])->first();

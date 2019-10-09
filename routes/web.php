@@ -113,8 +113,8 @@ Route::prefix('/admin')->group(function() {
 //--------------------------------------------------------------------------------------------------------------------------------------------------//
 //九月API接口*
 Route::prefix('/index')->group(function (){
-    Route::get('/login','api\loginController@login');
-    Route::get('/index','api\loginController@index');
+    Route::get('/login','api\loginController@login');//登录
+    Route::get('/index','api\loginController@index');//后台首页
     Route::get('/send','api\loginController@send');
     Route::get('/bind','api\loginController@bind');
     Route::post('/do_bind','api\loginController@do_bind');
