@@ -114,6 +114,7 @@ Route::prefix('/admin')->group(function() {
 //九月API接口*
 Route::prefix('/index')->group(function (){
     Route::get('/login','api\loginController@login');//登录
+    Route::post('/do_login','api\loginController@do_login');
     Route::get('/index','api\loginController@index');//后台首页
     Route::get('/send','api\loginController@send');
     Route::get('/bind','api\loginController@bind');

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Tools\Tools;
 use App\Model\wechat;
 use DB;
-use Redis;
+use Illuminate\Support\Facades\Cache;
 class loginController extends Controller
 {
 
@@ -41,18 +41,19 @@ class loginController extends Controller
 //        //登录成功 存到session
 //        session(['data'=>$data]);
 //        return redirect('index/index');
-        $username = $request ->input('username');
+        $username = $request ->input('name');
+//        dd($username);
         $pwd = $request ->input('password');
+//        dd($pwd);
         $code = $request ->input('code');
-        $value = Radis::get('code'.$username);
+//        dd($code);
+        $value = Cache::get('code'.$username);
+//        dd($value);
         if($code != $value){
-            return json_encode(['code'=>202, 'msg'=>'验证码错误或已过期']);
+            echo json_encode(['code'=>202, 'msg'=>'验证码错误或已过期']);
         }
-        // dd($yan);
-        // var_dump($username);
-        // var_dump($pwd);die;
-        // dd($url);
         $status=DB::table('users')->where(['password'=>$pwd])->first();
+        echo "<script>alert('登陆成功');location.href='/index/index';</script>";
     }
 //发送验证码
     public function send(request $request)
@@ -66,6 +67,9 @@ class loginController extends Controller
 //        dd($password);
         //发送验证码 4位 6位
         $code=rand(1000,9999);
+        $rd = "code".$name;
+        // 存入缓存 Cache::put('key', 'value', $seconds);
+        $data = Cache::put($rd,$code,60);
         $url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->tools->get_access_token();
         //参数
         $data=[
@@ -114,6 +118,6 @@ class loginController extends Controller
         ]);
         $adminInfo->openid = $openid;
 //        $adminInfo->save();
-        echo '账号绑定成功';die;
+        echo "<script>alert('绑定账号成功');location.href='/index/login';</script>";
     }
 }
