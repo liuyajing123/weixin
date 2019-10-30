@@ -112,11 +112,98 @@ Route::prefix('/admin')->group(function() {
 });
 //--------------------------------------------------------------------------------------------------------------------------------------------------//
 //九月API接口*
+// 首页 登录 绑定账号
 Route::prefix('/index')->group(function (){
     Route::get('/login','api\loginController@login');//登录
-    Route::post('/do_login','api\loginController@do_login');
+    Route::post('/do_login','api\loginController@do_login');//登录执行
     Route::get('/index','api\loginController@index');//后台首页
-    Route::get('/send','api\loginController@send');
-    Route::get('/bind','api\loginController@bind');
-    Route::post('/do_bind','api\loginController@do_bind');
+    Route::get('/send','api\loginController@send');//发送验证码
+    Route::get('/bind','api\loginController@bind');//绑定账号
+    Route::post('/do_bind','api\loginController@do_bind');//绑定账号执行
 });
+//接口添加视图
+Route::get('user/add',function(){
+    return view('curd/add');
+});
+//接口展示视图
+Route::get('/user/user_list',function(){
+    return view('curd/list');
+});
+//修改查询视图
+Route::get('/user/find',function(){
+    return view('curd/find');
+});
+//接口增删改查
+Route::prefix('api')->group(function() {
+    //用户接口列表
+    Route::any('/list','api\testController@list');
+    //用户接口添加
+    Route::any('/add','api\testController@add');
+    //用户接口删除
+    Route::any('/del','api\testController@del');;
+    //修改查询用户信息
+    Route::any('/find','api\testController@find');
+    //执行修改
+    Route::any('/save','api\testController@save');
+});
+//接口增删改查restful
+Route::resource('/api/user','api\userController');
+
+//周考1 商品添加  展示  天气
+Route::resource('/api/category','api\GoodsController');
+Route::get('Api/goods_add', function () {
+    return view('Api.goods_add');
+});
+Route::get('Api/goods_show', function () {
+    return view('Api.goods_show');
+});
+Route::any('/weather','api\GoodsController@weather');
+Route::get('Api/weather', function () {
+    return view('Api.weather');
+});
+
+//后台管理
+Route::prefix('/admin')->group(function(){
+    Route::any('/category/add','api\categoryController@add');//分类视图
+    Route::any('/category/do_add','api\categoryController@do_add');//执行
+    Route::any('/category/list','api\categoryController@list');//列表
+    Route::any('/category/type_add','api\categoryController@type_add');//类型视图
+    Route::any('/category/do_type_add','api\categoryController@do_type_add');//执行
+    Route::any('/category/type_list','api\categoryController@type_list');//列表
+    Route::any('/category/attr_add','api\categoryController@attr_add');//属性视图
+    Route::any('/category/del','api\categoryController@del');//属性视图
+    Route::any('/category/do_attr_add','api\categoryController@do_attr_add');//执行
+    Route::any('/category/attr_list','api\categoryController@attr_list');//列表
+    Route::any('/category/goods_add','api\categoryController@goods_add');//商品视图
+    Route::any('/category/do_goods_add','api\categoryController@do_goods_add');//执行
+    Route::any('/category/add_do','api\categoryController@add_do');//执行
+    Route::any('/category/goods_list','api\categoryController@goods_list');//列表
+    Route::any('/category/product_add/{goods_id}','api\categoryController@product_add');//货品视图
+    Route::any('/category/do_product_add','api\categoryController@do_product_add');//货品执行
+});
+//前台管理
+Route::prefix('/api/index')->middleware('apihearder')->group(function (){ //apiheader 中间件 跨域header头 防刷
+    Route::any('/index','api\indexController@index');
+    Route::any('/detail','api\indexController@detail');
+    Route::any('/goods_cate_show','api\indexController@goods_cate_show');
+    Route::any('/goods_cate','api\indexController@goods_cate');
+    Route::get('/login','api\usertokenController@login');
+    Route::get('/getUser','api\usertokenController@getUser');
+
+    Route::middleware('apitoken')->group(function(){ //apitoken 校验token
+        Route::get('/cart_add','api\usertokenController@cart_add');
+        Route::any('/cart_list','api\usertokenController@cart_list');
+    });
+});
+//   八月份技能题 AB卷
+Route::prefix('/news')->middleware('login')->group(function(){  //中间件防刷  每天5次
+   Route::any('add','api\xinwenController@add');//新闻添加 接口获取数据 循环加入四十条数据
+   Route::any('register','api\xinwenController@register');//普通注册
+   Route::any('register_do','api\xinwenController@register_do');
+   Route::any('login','api\xinwenController@login');//普通登录 加token
+   Route::any('login_do','api\xinwenController@login_do');
+   Route::any('news_list','api\xinwenController@news_list');//新闻列表
+});
+
+
+

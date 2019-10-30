@@ -28,19 +28,6 @@ class loginController extends Controller
     }
     public function do_login(Request $request)
     {
-//        $name=request('name');
-//        $password=request('password');
-//        //用户名错误 密码错误   用户名或密码错误
-//        $data=DB::table('user')->where(['name'=>$name,'password'=>$password])->first();
-////        dd($data);
-//        if(!data){
-//            //报错登录失败
-//            die;
-//        }
-//        $data=$data->toArray();
-//        //登录成功 存到session
-//        session(['data'=>$data]);
-//        return redirect('index/index');
         $username = $request ->input('name');
 //        dd($username);
         $pwd = $request ->input('password');
@@ -49,6 +36,12 @@ class loginController extends Controller
 //        dd($code);
         $value = Cache::get('code'.$username);
 //        dd($value);
+        if(empty($code)){
+            echo "<script>alert('验证码不为空');location.href='/index/login';</script>";die;
+        }
+        if($value != $code){
+            echo "<script>alert('验证码不正确');location.href='/index/login';</script>";die;
+        }
         if($code != $value){
             echo json_encode(['code'=>202, 'msg'=>'验证码错误或已过期']);
         }

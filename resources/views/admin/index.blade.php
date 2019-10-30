@@ -47,9 +47,41 @@
                     <span class="ng-scope">分类</span>
                 </li>
                 <li>
-                    <a class="J_menuItem" href="index_v1.html">
+                    <a class="J_menuItem" href="{{url('/admin/category/add')}}">
                         <i class="fa fa-home"></i>
-                        <span class="nav-label">主页</span>
+                        <span class="nav-label">分类添加</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/list')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">分类展示</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/type_add')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">类型添加</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/type_list')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">类型展示</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/attr_add')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">属性添加</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/attr_list')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">属性展示</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/goods_add')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">商品添加</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/goods_list')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">商品列表</span>
+                    </a>
+                    <a class="J_menuItem" href="{{url('/admin/category/product_add/{goods_id}')}}">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">货品添加</span>
                     </a>
                 </li>
                 <li>
