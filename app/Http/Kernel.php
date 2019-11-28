@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'apihearder' => \App\Http\Middleware\Api::class,
         'apitoken' => \App\Http\Middleware\Token::class,
         'login' => \App\Http\Middleware\Login::class,
+        'kaoshi' => \App\Http\Middleware\kaoshi::class,
     ];
 
     /**

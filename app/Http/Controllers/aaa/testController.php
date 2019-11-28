@@ -98,7 +98,7 @@ class testController extends Controller
         header('Location:'.$url);
     }
 //获取code
-    public function get_code(Request $request)
+        public function get_code(Request $request)
     {
 //        接收所有数据信息
         $data = $request->all();

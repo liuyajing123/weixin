@@ -205,5 +205,38 @@ Route::prefix('/news')->middleware('login')->group(function(){  //中间件防�
    Route::any('news_list','api\xinwenController@news_list');//新闻列表
 });
 
+//考试
+Route::prefix('/kaoshi')->middleware('kaoshi')->group(function (){
+   Route::any('register','api\kaoshi@register');
+   Route::any('do_register','api\kaoshi@do_register');
+   Route::any('login','api\kaoshi@login');
+   Route::any('do_login','api\kaoshi@do_login');
+   Route::any('add','api\kaoshi@add');
+   Route::any('news_list','api\kaoshi@news_list');
+});
+//腾讯视频小程序
+Route::prefix('/mini')->group(function(){
+    Route::any('/nav/lists','mini\navController@lists');
+    Route::any('/nav/cha','mini\indexController@cha');
+});
 
-
+Route::prefix('/admin')->group(function() {
+    Route::any('/get_access_token','adminController@access_token');
+    Route::get('/admin','adminController@admin');//后台首页
+    Route::get('/login','adminController@login');//后台登录
+    Route::post('/do_login','adminController@do_login');//登录执行
+    Route::get('/upload_video','adminController@upload_video');//视频上传
+    Route::any('/do_upload','adminController@do_upload');//上传执行
+    Route::get('/cate_add','adminController@cate_add');//分类添加
+    Route::post('/do_cate_add','adminController@do_cate_add');//分类添加执行
+    Route::get('/cate_list','adminController@cate_list');//分类列表
+    Route::get('/delete_cate/{id}','adminController@delete_cate');//分类删除
+    Route::get('/update_cate/{id}','adminController@update_cate');//分类修改
+    Route::post('/update','adminController@update');//分类修改
+//    Route::get('/upload_thumb','adminController@upload_video');//轮播图上传
+//    Route::post('/do_upload_thumb','adminController@do_upload_thumb');//轮播图上传执行
+    Route::get('/add_menu','adminController@add_menu');//添加菜单
+    Route::post('/create_menu','adminController@create_menu');//添加菜单执行
+    Route::get('/list_menu','adminController@list_menu');//菜单列表
+    Route::get('/load_menu','adminController@load_menu');//刷新
+});
